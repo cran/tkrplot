@@ -56,7 +56,7 @@ f<-function(...) {
     }
 }
 s <- tkscale(tt, command=f, from=0.05, to=2.00, variable="bb",
-             showvalue=F, resolution=0.05, orient="horiz")
+             showvalue=FALSE, resolution=0.05, orient="horiz")
 tkpack(img,s)
 }
 }
