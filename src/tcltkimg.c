@@ -66,6 +66,7 @@
 
 #include "Rinternals.h"
 #include "Rgraphics.h"
+#include "Rversion.h"
 
 /* from src/include/Devices.h */
 #define killDevice Rf_killDevice
@@ -92,7 +93,13 @@ void TkWinReleaseDrawableDC();
 
 typedef HENHMETAFILE RplotImage;
 #else
+#include <X11/Xutil.h>
 typedef XImage *RplotImage;
+#if R_VERSION >= R_Version(1, 7, 0)
+# include <R_ext/GetX11Image.h>
+#else
+  extern Rboolean (*ptr_R_GetX11Image)(int, XImage **, int *, int *);
+#endif
 #endif 
 
 typedef struct RplotMaster {
@@ -153,15 +160,18 @@ GetRplotImage(int d, RplotImage *pximage, int *pwidth, int *pheight)
     }
     else return TCL_ERROR;
 #else
-    extern Rboolean (*ptr_R_GetX11Image)(int, XImage **, int *, int *);
-
     if (TYPEOF(dev) != STRSXP ||
 	!(strcmp(CHAR(STRING_ELT(dev, 0)), "XImage") == 0 ||
 	  strncmp(CHAR(STRING_ELT(dev, 0)), "PNG", 3) == 0 ||
 	  strncmp(CHAR(STRING_ELT(dev, 0)), "X11", 3) == 0))
 	return TCL_ERROR;
 
-    if (ptr_R_GetX11Image(d, pximage, pwidth, pheight)) {
+#if R_VERSION >= R_Version(1,7,0)
+    if (R_GetX11Image(d, pximage, pwidth, pheight))
+#else
+    if (ptr_R_GetX11Image(d, pximage, pwidth, pheight)) 
+#endif
+    {
 	killDevice(d);
         return TCL_OK;
     }
