@@ -1,5 +1,5 @@
 Package: tkrplot
-Version: 0.0-6
+Version: 0.0-7
 Author: Luke Tierney <luke@stat.umn.edu>
 Description: simple mechanism for placing R graphics in a Tk widget
 Title: TK Rplot

@@ -32,7 +32,17 @@ AC_ARG_VAR([TCLTK_LIBS],
 AC_ARG_VAR([TCLTK_CPPFLAGS],
            [flags needed for finding the tcl.h and tk.h headers])
 
-R_TCLTK
+: ${R_HOME=`R RHOME`}
+if test -z "${R_HOME}"; then
+  echo "could not determine R_HOME"
+  exit 1
+fi
+TCLTK_CPPFLAGS=`${R_HOME}/bin/R CMD config TCLTK_CPPFLAGS`
+TCLTK_LIBS=`${R_HOME}/bin/R CMD config TCLTK_LIBS`	   
+
+if test -z "${TCLTK_LIBS}"; then
+  R_TCLTK
+fi
 
 ### Output.
 
