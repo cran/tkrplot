@@ -459,7 +459,7 @@ EXPORT(int,Rplot_Init)(interp)
     Tcl_Interp *interp;
 {
     static int initialized = 0;
-    char *version;
+    CONST char *version;
 
     if ((version = Tcl_InitStubs(interp, "8.0", 0)) == NULL)
 	return TCL_ERROR;
