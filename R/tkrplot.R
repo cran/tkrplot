@@ -1,8 +1,13 @@
 require(tcltk)
 
 if (Sys.info()["sysname"] == "Windows") {
-    .my.tkdev <- function(hscale=1, vscale=1)
-        win.metafile(width=4*hscale,height=4*vscale)
+    if(R.version$major == 2 && R.version$minor < 3) {
+        .my.tkdev <- function(hscale=1, vscale=1)
+            win.metafile(width=4*hscale,height=4*vscale)
+    } else {
+        .my.tkdev <- function(hscale=1, vscale=1)
+            win.metafile(width=4*hscale,height=4*vscale, restoreConsole=FALSE)
+    }
 } else if (exists("X11", env=.GlobalEnv)) {
     .my.tkdev <- function(hscale=1, vscale=1)
         X11("XImage", 480*hscale, 480*vscale)
@@ -35,7 +40,7 @@ tkrreplot <- function(lab, fun = lab$fun,
     .Tcl(paste("image create Rplot", lab$image))
 }
 
-#**** this is unspeakably crude    
+#**** this is unspeakably crude
 tkpersp <- function(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...) {
     base<-tktoplevel()
 
@@ -73,7 +78,7 @@ tkpersp <- function(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...) {
                 title="Theta", initial=theta, showvalue=TRUE,
                 command=function(x) {
                     if (x != theta) {
-                        theta <<- x 
+                        theta <<- x
                         tkrreplot(img)
                     }
                 })
@@ -82,7 +87,7 @@ tkpersp <- function(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...) {
                 title="Phi", initial=phi, showvalue=TRUE,
                 command=function(x) {
                     if (x != phi) {
-                        phi <<- x 
+                        phi <<- x
                         tkrreplot(img)
                     }
                 })
@@ -91,7 +96,7 @@ tkpersp <- function(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...) {
                 title="Expand", initial=expand, showvalue=TRUE,
                 command=function(x) {
                     if (x != expand) {
-                        expand <<- x 
+                        expand <<- x
                         tkrreplot(img)
                     }
                 })
@@ -100,7 +105,7 @@ tkpersp <- function(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...) {
                 title="R", initial=r, showvalue=TRUE,
                 command=function(x) {
                     if (x != r) {
-                        r <<- x 
+                        r <<- x
                         tkrreplot(img)
                     }
                 })

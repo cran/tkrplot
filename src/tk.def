@@ -1,8 +1,0 @@
-LIBRARY tk@VER@.dll
-EXPORTS
-  Tk_Init
-  Tk_SafeInit
-  Tk_ImageChanged
-  TkWinGetDrawableDC
-  TkWinReleaseDrawableDC
-  Tk_CreateImageType

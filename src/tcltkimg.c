@@ -66,12 +66,7 @@
 
 #include "Rinternals.h"
 #include "Rgraphics.h"
-#include "Rversion.h"
-
-/* from src/include/Devices.h */
-#define killDevice Rf_killDevice
-void killDevice(int);
-
+#include "Rdevices.h"  /* for killDevice */
 
 /*
  * Image data structures 
@@ -95,11 +90,7 @@ typedef HENHMETAFILE RplotImage;
 #else
 #include <X11/Xutil.h>
 typedef XImage *RplotImage;
-#if R_VERSION >= R_Version(1, 7, 0)
-# include <R_ext/GetX11Image.h>
-#else
-  extern Rboolean (*ptr_R_GetX11Image)(int, XImage **, int *, int *);
-#endif
+#include <R_ext/GetX11Image.h>
 #endif 
 
 typedef struct RplotMaster {
@@ -131,13 +122,13 @@ typedef struct RplotInstance {
  *	A standard Tcl result.
  *
  * Side effects:
- *	The device is closed.  On Windows the clibboard is modified.
+ *	The device is closed.  On Windows the clipboard is modified.
  *
  *---------------------------------------------------------------------- */
 static int
 GetRplotImage(int d, RplotImage *pximage, int *pwidth, int *pheight)
 {
-    SEXP dev = elt(findVar(install(".Devices"), R_NilValue), d);
+    SEXP dev = elt(findVar(install(".Devices"), R_BaseEnv), d);
 #ifdef Win32
     HENHMETAFILE hemf;
 
@@ -166,12 +157,7 @@ GetRplotImage(int d, RplotImage *pximage, int *pwidth, int *pheight)
 	  strncmp(CHAR(STRING_ELT(dev, 0)), "X11", 3) == 0))
 	return TCL_ERROR;
 
-#if R_VERSION >= R_Version(1,7,0)
-    if (R_GetX11Image(d, pximage, pwidth, pheight))
-#else
-    if (ptr_R_GetX11Image(d, pximage, pwidth, pheight)) 
-#endif
-    {
+    if (R_GetX11Image(d, pximage, pwidth, pheight)) {
 	killDevice(d);
         return TCL_OK;
     }
