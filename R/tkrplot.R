@@ -120,7 +120,10 @@ tkpersp <- function(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...) {
     if (! .Tkrplot.loaded) {
         chname<-"tkrplot"
         file.ext <- .Platform$dynlib.ext
-        path <- file.path("libs", paste(chname, file.ext, sep = ""))
+        dlname <- paste(chname, file.ext, sep = "")
+        if (is.character(.Platform$r_arch) && .Platform$r_arch != "")
+            path <- file.path("libs", .Platform$r_arc, dlname)
+        else path <- file.path("libs", dlname)
         file <- system.file(path, package = pkg, lib.loc = lib)[1]
         .Tcl(paste("load", file, "Rplot"))
         .Tkrplot.loaded <<- TRUE
