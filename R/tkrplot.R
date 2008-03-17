@@ -10,7 +10,7 @@ if (Sys.info()["sysname"] == "Windows") {
     }
 } else if (exists("X11", env=.GlobalEnv)) {
     .my.tkdev <- function(hscale=1, vscale=1)
-        X11("XImage", 480*hscale, 480*vscale)
+        X11("XImage", 480*hscale, 480*vscale, type="Xlib")
 } else stop("tkrplot only supports Windows and X11")
 
 .My.Tk.index <- 0

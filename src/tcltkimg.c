@@ -1,3 +1,4 @@
+#include <string.h>
 #include <tk.h>
 
 /* This file contains an implementation of a Tk image type that shows
@@ -65,8 +66,13 @@
    at http://purl.oclc.org/net/nijtmans/img.html. -- LT */
 
 #include "Rinternals.h"
-#include "Rgraphics.h"
-#include "Rdevices.h"  /* for killDevice */
+#include "Rversion.h"
+#if R_VERSION < R_Version(2,7,0)
+# include "Rgraphics.h"
+# include "Rdevices.h"  /* for killDevice */
+#else
+# include <R_ext/GraphicsEngine.h>
+#endif
 
 /*
  * Image data structures 
@@ -420,12 +426,12 @@ DeleteRplot(masterData)
 
 #ifndef USE_TCL_STUBS
 #undef Tcl_InitStubs
-#define Tcl_InitStubs(a,b,c) Tcl_PkgRequire(a,"Tcl",TCL_VERSION,1)
+#define Tcl_InitStubs(a,b,c) Tcl_PkgRequire(a,"Tcl",TCL_VERSION,0)
 #endif
 
 #ifndef USE_TK_STUBS
 #undef Tk_InitStubs
-#define Tk_InitStubs(a,b,c) Tcl_PkgRequire(a,"Tk",TK_VERSION,1)
+#define Tk_InitStubs(a,b,c) Tcl_PkgRequire(a,"Tk",TK_VERSION,0)
 #endif
 
 #define RPLOT_PATCH_LEVEL "0.0.0"
