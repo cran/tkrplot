@@ -1,5 +1,3 @@
-require(tcltk)
-
 if (Sys.info()["sysname"] == "Windows") {
     if(R.version$major == 2 && R.version$minor < 3) {
         .my.tkdev <- function(hscale=1, vscale=1)
@@ -10,7 +8,7 @@ if (Sys.info()["sysname"] == "Windows") {
     }
 } else if (exists("X11", env=.GlobalEnv)) {
     .my.tkdev <- function(hscale=1, vscale=1)
-        X11("XImage", 480*hscale, 480*vscale, type="Xlib")
+        X11("XImage", 480*hscale, 480*vscale)
 } else stop("tkrplot only supports Windows and X11")
 
 .My.Tk.index <- 0
@@ -118,6 +116,7 @@ tkpersp <- function(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...) {
 
 .First.lib <- function(lib, pkg) {
     if (! .Tkrplot.loaded) {
+        require(tcltk)
         chname<-"tkrplot"
         file.ext <- .Platform$dynlib.ext
         dlname <- paste(chname, file.ext, sep = "")
@@ -125,7 +124,9 @@ tkpersp <- function(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...) {
             path <- file.path("libs", .Platform$r_arc, dlname)
         else path <- file.path("libs", dlname)
         file <- system.file(path, package = pkg, lib.loc = lib)[1]
-        .Tcl(paste("load", file, "Rplot"))
+        tryCatch(.Tcl(paste("load", file, "Rplot")),
+                 error = function(e)
+                     warning("loading Rplot failed", call. = FALSE))
         .Tkrplot.loaded <<- TRUE
     }
 }
