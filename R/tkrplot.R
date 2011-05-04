@@ -124,7 +124,7 @@ tkpersp <- function(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...) {
             path <- file.path("libs", .Platform$r_arc, dlname)
         else path <- file.path("libs", dlname)
         file <- system.file(path, package = pkg, lib.loc = lib)[1]
-        tryCatch(.Tcl(paste("load", file, "Rplot")),
+        tryCatch(tcl("load", file, "Rplot"),
                  error = function(e)
                      warning("loading Rplot failed", call. = FALSE))
         .Tkrplot.loaded <<- TRUE
