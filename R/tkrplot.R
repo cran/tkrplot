@@ -1,21 +1,18 @@
 if (Sys.info()["sysname"] == "Windows") {
-    if(R.version$major == 2 && R.version$minor < 3) {
-        .my.tkdev <- function(hscale=1, vscale=1)
-            win.metafile(width=4*hscale,height=4*vscale)
-    } else {
-        .my.tkdev <- function(hscale=1, vscale=1)
-            win.metafile(width=4*hscale,height=4*vscale, restoreConsole=FALSE)
-    }
+    win.metafile(width=4*hscale,height=4*vscale, restoreConsole=FALSE)
 } else if (exists("X11", env=.GlobalEnv)) {
     .my.tkdev <- function(hscale=1, vscale=1)
         X11("XImage", 480*hscale, 480*vscale)
 } else stop("tkrplot only supports Windows and X11")
 
-.My.Tk.index <- 0
-.make.tkindex <- function() {
-    .My.Tk.index <<- .My.Tk.index + 1
-    .My.Tk.index
-}
+.make.tkindex <-
+    local({
+        .My.Tk.index <- 0
+        function() {
+            .My.Tk.index <<- .My.Tk.index + 1
+            .My.Tk.index
+        }
+    })
 
 tkrplot <- function(parent, fun, hscale=1, vscale=1) {
     image <- paste("Rplot", .make.tkindex(), sep="")
@@ -112,21 +109,15 @@ tkpersp <- function(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...) {
     tkpack(img,frame)
 }
 
-.Tkrplot.loaded<-FALSE
-
-.First.lib <- function(lib, pkg) {
-    if (! .Tkrplot.loaded) {
-        require(tcltk)
-        chname<-"tkrplot"
-        file.ext <- .Platform$dynlib.ext
-        dlname <- paste(chname, file.ext, sep = "")
-        if (is.character(.Platform$r_arch) && .Platform$r_arch != "")
-            path <- file.path("libs", .Platform$r_arc, dlname)
-        else path <- file.path("libs", dlname)
-        file <- system.file(path, package = pkg, lib.loc = lib)[1]
-        tryCatch(tcl("load", file, "Rplot"),
-                 error = function(e)
-                     warning("loading Rplot failed", call. = FALSE))
-        .Tkrplot.loaded <<- TRUE
-    }
+.onLoad <- function(libname, pkgname) {
+    chname <- "tkrplot"
+    file.ext <- .Platform$dynlib.ext
+    dlname <- paste(chname, file.ext, sep = "")
+    if (is.character(.Platform$r_arch) && .Platform$r_arch != "")
+        path <- file.path("libs", .Platform$r_arc, dlname)
+    else path <- file.path("libs", dlname)
+    file <- system.file(path, package = pkgname, lib.loc = libname)[1]
+    tryCatch(tcl("load", file, "Rplot"),
+             error = function(e)
+             warning("loading Rplot failed", call. = FALSE))
 }
