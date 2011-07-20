@@ -1,5 +1,6 @@
 if (Sys.info()["sysname"] == "Windows") {
-    win.metafile(width=4*hscale,height=4*vscale, restoreConsole=FALSE)
+    .my.tkdev <- function(hscale=1, vscale=1)
+        win.metafile(width=4*hscale,height=4*vscale, restoreConsole=FALSE)
 } else if (exists("X11", env=.GlobalEnv)) {
     .my.tkdev <- function(hscale=1, vscale=1)
         X11("XImage", 480*hscale, 480*vscale)
