@@ -1,3 +1,7 @@
 import(tcltk)
+importFrom("grDevices", "X11")
+importFrom("graphics", "par", "persp")
+if(.Platform$OS.type == "windows")
+    importFrom("grDevices", "win.metafile")
 export(tkpersp, tkrplot, tkrreplot)
 export(.make.tkindex, .my.tkdev)

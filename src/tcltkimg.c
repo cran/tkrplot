@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include <tk.h>
 
 /* This file contains an implementation of a Tk image type that shows
@@ -450,6 +451,12 @@ Tk_ImageType RplotImageType = {
 EXPORT(int,Rplot_Init)(interp)
     Tcl_Interp *interp;
 {
+    /* Added to allow CRAN to disable Tk initialization */
+#if !defined(Win32) && !defined(HAVE_AQUA)
+    if (getenv("R_DONT_USE_TK") != NULL)
+	return 0;
+#endif
+
     static int initialized = 0;
     CONST char *version;
 
