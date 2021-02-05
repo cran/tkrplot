@@ -397,7 +397,7 @@ DeleteRplot(masterData)
     RplotMaster *prpm = (RplotMaster *) masterData;
 
     if (prpm->instanceCount != 0)
-	panic("tried to delete Rplot image when instances still exist");
+	error("tried to delete Rplot image when instances still exist");
 
     if (prpm->haveImage)
 #ifdef Win32
@@ -476,4 +476,11 @@ EXPORT(int,Rplot_SafeInit)(interp)
     Tcl_Interp *interp;
 {
     return Rplot_Init(interp);
+}
+
+/* To make R CMD check --as-cran happy */
+void R_init_tkrplot(DllInfo *info)
+{
+    R_registerRoutines(info, NULL, NULL, NULL, NULL);
+    R_useDynamicSymbols(info, FALSE);
 }
