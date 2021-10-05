@@ -1,11 +1,11 @@
-AC_PREREQ(2.50)
+AC_PREREQ([2.69])
 
-AC_INIT(src/Makevars.in)
+AC_INIT
+AC_CONFIG_SRCDIR([src/Makevars.in])
 
 ## Tcl/Tk.
 AC_ARG_WITH([tcltk],
-[AC_HELP_STRING([--with-tcltk],
-                [use Tcl/Tk, or specify its library dir @<:@yes@:>@])],
+[AS_HELP_STRING([--with-tcltk],[use Tcl/Tk, or specify its library dir @<:@yes@:>@])],
 [if test "${withval}" = no; then
   want_tcltk=no
 elif test "${withval}" = yes; then
@@ -17,13 +17,11 @@ else
 fi],
 [want_tcltk=yes])
 AC_ARG_WITH([tcl-config],
-[AC_HELP_STRING([--with-tcl-config=TCL_CONFIG],
-                [specify location of tclConfig.sh @<:@@:>@])],
+[AS_HELP_STRING([--with-tcl-config=TCL_CONFIG],[specify location of tclConfig.sh @<:@@:>@])],
 [TCL_CONFIG="${withval}"],
 [TCL_CONFIG=""])
 AC_ARG_WITH([tk-config],
-[AC_HELP_STRING([--with-tk-config=TK_CONFIG],
-                [specify location of tkConfig.sh @<:@@:>@])],
+[AS_HELP_STRING([--with-tk-config=TK_CONFIG],[specify location of tkConfig.sh @<:@@:>@])],
 [TK_CONFIG="${withval}"],
 [TK_CONFIG=""])
 
@@ -46,7 +44,8 @@ fi
 
 ### Output.
 
-AC_OUTPUT(src/Makevars)
+AC_CONFIG_FILES([src/Makevars])
+AC_OUTPUT
 
 dnl Local Variables: ***
 dnl mode: sh ***

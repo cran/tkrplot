@@ -1,5 +1,5 @@
 Package: tkrplot
-Version: 0.0-25
+Version: 0.0-26
 Author: Luke Tierney <luke-tierney@uiowa.edu>
 Description: Simple mechanism for placing R graphics in a Tk widget.
 Title: TK Rplot
@@ -8,6 +8,6 @@ License: GPL
 Maintainer: Luke Tierney <luke-tierney@uiowa.edu>
 SystemRequirements: Windows or X11
 NeedsCompilation: yes
-Packaged: 2021-02-03 13:49:41 UTC; luke
+Packaged: 2021-10-05 14:48:00 UTC; luke
 Repository: CRAN
-Date/Publication: 2021-02-05 15:50:03 UTC
+Date/Publication: 2021-10-05 16:40:02 UTC
