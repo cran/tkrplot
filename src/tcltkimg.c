@@ -190,15 +190,15 @@ GetRplotImage(int d, RplotImage *pximage, int *pwidth, int *pheight)
  *----------------------------------------------------------------------
  */
 static int
-CreateRplot(interp, name, argc, objv, typePtr, master, clientDataPtr)
-    Tcl_Interp *interp;		/* interpreter that will own the image */
-    char *name;			/* name to use for image */
-    int argc;			/* number of arguments */
-    Tcl_Obj *objv[];		/* argument strings  for options as objects
-				   (doesn't include image name or type) */
-    Tk_ImageType *typePtr;	/* not used */
-    Tk_ImageMaster master;	/* token for image for use in callbacks */
-    ClientData *clientDataPtr;	/* store pointer to master data data here */
+CreateRplot(Tcl_Interp *interp,	/* interpreter that will own the image */
+	    const char *name,	/* name to use for image */
+	    int argc,		/* number of arguments */
+	    Tcl_Obj *const objv[],/* argument strings  for options as objects
+				     (doesn't include image name or type) */
+	    const Tk_ImageType *typePtr,/* not used */
+	    Tk_ImageMaster master,/* token for image for use in callbacks */
+	    ClientData *clientDataPtr)	/* store pointer to master data data
+					   here */
 {
     RplotMaster rpm, *prpm;
 
@@ -255,9 +255,8 @@ CreateRplot(interp, name, argc, objv, typePtr, master, clientDataPtr)
  *----------------------------------------------------------------------
  */
 static ClientData
-GetRplot(tkwin, masterData)
-    Tk_Window tkwin;		/* window for the instance */
-    ClientData masterData;	/* pointer to master data structure */
+GetRplot(Tk_Window tkwin,	/* window for the instance */
+	 ClientData masterData)	/* pointer to master data structure */
 {
     RplotMaster *prpm = (RplotMaster *) masterData;
     RplotInstance *inst;
@@ -296,15 +295,15 @@ GetRplot(tkwin, masterData)
  *----------------------------------------------------------------------
  */
 static void
-DisplayRplot(clientData, display, drawable, imageX, imageY, width,
-	height, drawableX, drawableY)
-    ClientData clientData;	/* pointer to instance data structure */
-    Display *display;		/* display on which to draw image */
-    Drawable drawable;		/* pixmap or window in which to draw image. */
-    int imageX, imageY;		/* upper-left corner of region within image */
-    int width, height;		/* dimensions of region within image to draw */
-    int drawableX, drawableY;	/* coordinates in drawable that correspond to
-				   imageX and imageY. */
+DisplayRplot(ClientData clientData, /* pointer to instance data structure */
+	     Display *display, /* display on which to draw image */
+	     Drawable drawable, /* pixmap or window in which to draw image. */
+	     int imageX, /* upper-left corner of region within image */
+	     int imageY,
+	     int width, /* dimensions of region within image to draw */
+	     int height,
+	     int drawableX, /* coordinates in drawable that correspond to */
+	     int drawableY) /* imageX and imageY. */
 {
     RplotInstance *inst = (RplotInstance *) clientData;
     RplotMaster *prpm = inst->master;
@@ -362,9 +361,8 @@ DisplayRplot(clientData, display, drawable, imageX, imageY, width,
  *----------------------------------------------------------------------
  */
 static void
-FreeRplot(clientData, display)
-    ClientData clientData;	/* pointer instance data structure */
-    Display *display;		/* display containing window that used image */
+FreeRplot(ClientData clientData, /* pointer instance data structure */
+	  Display *display)      /* display containing window that used image */
 {
     RplotInstance *inst = (RplotInstance *) clientData;
     RplotMaster *prpm = inst->master;
@@ -391,8 +389,7 @@ FreeRplot(clientData, display)
  *----------------------------------------------------------------------
  */
 static void
-DeleteRplot(masterData)
-    ClientData masterData;	/* pointer to master structure for image */
+DeleteRplot(ClientData masterData) /* pointer to master structure for image */
 {
     RplotMaster *prpm = (RplotMaster *) masterData;
 
@@ -448,8 +445,7 @@ Tk_ImageType RplotImageType = {
     NULL		/* nextPtr */
 };
 
-EXPORT(int,Rplot_Init)(interp)
-    Tcl_Interp *interp;
+EXPORT(int,Rplot_Init)(Tcl_Interp *interp)
 {
     /* Added to allow CRAN to disable Tk initialization */
 #if !defined(Win32) && !defined(HAVE_AQUA)
@@ -472,8 +468,7 @@ EXPORT(int,Rplot_Init)(interp)
     return Tcl_PkgProvide(interp,"Rplot", RPLOT_PATCH_LEVEL);
 }
 
-EXPORT(int,Rplot_SafeInit)(interp)
-    Tcl_Interp *interp;
+EXPORT(int,Rplot_SafeInit)(Tcl_Interp *interp)
 {
     return Rplot_Init(interp);
 }
