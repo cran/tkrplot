@@ -87,11 +87,12 @@
    TkWinGetDrawableDC and TkWinReleaseDrawableDC. */
 typedef struct TkWinDCState {
     HPALETTE palette;
+    int bkmode;
 } TkWinDCState;
 
-/* These declarations don't even appear in the Tk source heaters */
-HDC TkWinGetDrawableDC();
-void TkWinReleaseDrawableDC();
+/* These declarations don't even appear in the Tk source headers */
+HDC TkWinGetDrawableDC(Display*, Drawable, TkWinDCState*);
+void TkWinReleaseDrawableDC(Drawable, HDC, TkWinDCState*);
 
 typedef HENHMETAFILE RplotImage;
 #else
@@ -314,7 +315,8 @@ DisplayRplot(ClientData clientData, /* pointer to instance data structure */
 
     SetRect(&rect, 0, 0, prpm->width, prpm->height);
     if (! PlayEnhMetaFile(hdc, prpm->image, &rect))
-      REprintf("error code %d playing mefafile\n", GetLastError());
+      REprintf("error code %lu playing mefafile\n",
+               (unsigned long)GetLastError());
     TkWinReleaseDrawableDC(drawable, hdc, &dcState);
 #else
     int depth = Tk_Depth(inst->tkwin);

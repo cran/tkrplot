@@ -6,10 +6,14 @@
 \alias{tkrplot}
 \alias{tkrreplot}
 \alias{tkpersp}
+\alias{.make.tkindex}
+\alias{.my.tkdev}
 \usage{
 tkrplot(parent, fun, hscale=1, vscale=1)
 tkrreplot(lab, fun = lab$fun, hscale=lab$hscale, vscale=lab$vscale)
 tkpersp(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...)
+.my.tkdev(hscale = 1, vscale = 1)
+.make.tkindex()
 }
 \arguments{
   \item{parent}{parent of widget window}
@@ -38,6 +42,9 @@ tkpersp(x,y,z, theta = 30,phi = 30,expand = 0.5, r = sqrt(3), ...)
   \code{tkpersp} is called like \code{persp} but produces a plot in
   which some of the parameters of \code{persp} are controlled
   graphically.
+
+  \code{.my.tkdev} and \code{.make.tkindex} are useful for defining new
+  functions like \code{tkrplot}.
 }
 
 \examples{
