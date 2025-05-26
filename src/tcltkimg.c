@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <tk.h>
 
+/* For Tcl before 9 */
+#ifndef TCL_SIZE_MAX
+  typedef int Tcl_Size;
+#endif
+
 /* This file contains an implementation of a Tk image type that shows
    the contents of an R graphics device.  You create an image as
 
@@ -193,7 +198,8 @@ GetRplotImage(int d, RplotImage *pximage, int *pwidth, int *pheight)
 static int
 CreateRplot(Tcl_Interp *interp,	/* interpreter that will own the image */
 	    const char *name,	/* name to use for image */
-	    int argc,		/* number of arguments */
+	    // Tcl 9 has Tcl_Size, Tcl 8 has int
+	    Tcl_Size argc,		/* number of arguments */
 	    Tcl_Obj *const objv[],/* argument strings  for options as objects
 				     (doesn't include image name or type) */
 	    const Tk_ImageType *typePtr,/* not used */
@@ -446,6 +452,11 @@ Tk_ImageType RplotImageType = {
     DeleteRplot,	/* deleteProc */
     NULL		/* nextPtr */
 };
+
+#ifndef CONST
+// defined up to Tk 8.6
+#define CONST const
+#endif
 
 EXPORT(int,Rplot_Init)(Tcl_Interp *interp)
 {
