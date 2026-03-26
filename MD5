@@ -1,4 +1,4 @@
-1599fdbdfdc6091b8590b68c0b51c011 *DESCRIPTION
+4091d2946c4cacec12f4cfd0e129b29a *DESCRIPTION
 3aca8b2796f1f9b6214ab2f347cfa1ed *NAMESPACE
 4fceef0e7afa31faa84ae6c7affcf290 *R/tkrplot.R
 086f7cec932bd63c4da5ccd1298968bf *cleanup
@@ -8,4 +8,4 @@ d41d8cd98f00b204e9800998ecf8427e *configure.win
 b17fdaab8f515338f0f05a4eef87aaf9 *man/TkRplot.Rd
 b4f97e309b0bab9c0b1f17f8731d0e22 *src/Makevars.in
 6b9d020ac2c827c5e35b9f16ff8f13f9 *src/Makevars.win
-e9472468b03a860187569250406291bd *src/tcltkimg.c
+0d658c7d82fc8a722202100a89954fcf *src/tcltkimg.c

@@ -141,7 +141,12 @@ typedef struct RplotInstance {
 static int
 GetRplotImage(int d, RplotImage *pximage, int *pwidth, int *pheight)
 {
+
+#if R_VERSION < R_Version(4, 6, 0)
     SEXP dev = elt(findVar(install(".Devices"), R_BaseEnv), d);
+#else
+    SEXP dev = elt(R_getVar(install(".Devices"), R_BaseEnv, TRUE), d);
+#endif
 #ifdef Win32
     HENHMETAFILE hemf;
 
